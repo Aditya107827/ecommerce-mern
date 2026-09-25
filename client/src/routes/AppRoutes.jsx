@@ -19,6 +19,7 @@ import AdminProducts from "../pages/admin/AdminProducts";
 import AdminOrders from "../pages/admin/AdminOrders";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminReviews from "../pages/admin/AdminReviews";
+import AdminSettings from "../pages/admin/AdminSettings";
 import AdminRoute from "./AdminRoute";
 
 function AppRoutes() {
@@ -82,6 +83,10 @@ function AppRoutes() {
                         <Route
                             path="reviews"
                             element={<AdminReviews />}
+                        />
+                        <Route
+                            path="settings"
+                            element={<AdminSettings />}
                         />
                     </Route>
                 </Route>

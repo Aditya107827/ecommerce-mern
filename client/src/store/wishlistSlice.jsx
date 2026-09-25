@@ -19,6 +19,7 @@ const normalizeWishlistProduct = (product) => {
         name: product.name,
         price: product.price,
         image: product.image || "",
+        images: product.images || [],
         category: product.category,
         stock: product.stock,
         featured: product.featured,

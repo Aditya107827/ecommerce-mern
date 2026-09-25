@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../services/api";
 
@@ -218,280 +219,294 @@ function AdminOrders() {
                 </div>
             ) : (
                 <>
-                <div className="space-y-5">
+                    <div className="space-y-5">
 
-                    {orders.map((order) => (
-                        <article
-                            key={order._id}
-                            className="rounded-2xl border border-gray-200 bg-white p-6"
-                        >
+                        {orders.map((order) => (
+                            <article
+                                key={order._id}
+                                className="rounded-2xl border border-gray-200 bg-white p-6"
+                            >
 
-                            {/* Top */}
-                            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                                {/* Top */}
+                                <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
 
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Order ID
+                                        </p>
+
+                                        <p className="mt-1 break-all font-semibold text-gray-900">
+                                            {order._id}
+                                        </p>
+
+                                        <p className="mt-2 text-sm text-gray-500">
+                                            {new Date(
+                                                order.createdAt
+                                            ).toLocaleString("en-IN")}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+
+                                        <span
+                                            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${getStatusClasses(
+                                                order.orderStatus
+                                            )}`}
+                                        >
+                                            {order.orderStatus}
+                                        </span>
+
+                                        <select
+                                            value={order.orderStatus}
+                                            disabled={
+                                                updatingId === order._id
+                                            }
+                                            onChange={(event) =>
+                                                handleStatusChange(
+                                                    order._id,
+                                                    event.target.value
+                                                )
+                                            }
+                                            className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-black disabled:cursor-not-allowed disabled:opacity-60"
+                                        >
+                                            {[
+                                                order.orderStatus,
+                                                ...(STATUS_TRANSITIONS[order.orderStatus] || []),
+                                            ].map((status) => (
+                                                <option
+                                                    key={status}
+                                                    value={status}
+                                                >
+                                                    {status
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        status.slice(1)}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="my-6 border-t border-gray-100" />
+
+                                {/* Customer */}
+                                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Customer
+                                        </p>
+
+                                        <p className="mt-1 font-semibold text-gray-900">
+                                            {order.user?.name ||
+                                                "Unknown"}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Email
+                                        </p>
+
+                                        <p className="mt-1 break-all font-semibold text-gray-900">
+                                            {order.user?.email ||
+                                                "—"}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Items
+                                        </p>
+
+                                        <p className="mt-1 font-semibold text-gray-900">
+                                            {order.items.length}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Total
+                                        </p>
+
+                                        <p className="mt-1 font-semibold text-gray-900">
+                                            ₹{order.total.toLocaleString(
+                                                "en-IN"
+                                            )}
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                <div className="my-6 border-t border-gray-100" />
+
+                                {/* Products */}
                                 <div>
-                                    <p className="text-sm text-gray-500">
-                                        Order ID
-                                    </p>
+                                    <h2 className="text-lg font-bold text-gray-900">
+                                        Order Items
+                                    </h2>
 
-                                    <p className="mt-1 break-all font-semibold text-gray-900">
-                                        {order._id}
-                                    </p>
+                                    <div className="mt-4 space-y-3">
 
-                                    <p className="mt-2 text-sm text-gray-500">
-                                        {new Date(
-                                            order.createdAt
-                                        ).toLocaleString("en-IN")}
-                                    </p>
-                                </div>
-
-                                <div className="flex items-center gap-3">
-
-                                    <span
-                                        className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${getStatusClasses(
-                                            order.orderStatus
-                                        )}`}
-                                    >
-                                        {order.orderStatus}
-                                    </span>
-
-                                    <select
-                                        value={order.orderStatus}
-                                        disabled={
-                                            updatingId === order._id
-                                        }
-                                        onChange={(event) =>
-                                            handleStatusChange(
-                                                order._id,
-                                                event.target.value
-                                            )
-                                        }
-                                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-black disabled:cursor-not-allowed disabled:opacity-60"
-                                    >
-                                        {[
-                                            order.orderStatus,
-                                            ...(STATUS_TRANSITIONS[order.orderStatus] || []),
-                                        ].map((status) => (
-                                            <option
-                                                key={status}
-                                                value={status}
-                                            >
-                                                {status
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                    status.slice(1)}
-                                            </option>
-                                        ))}
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <div className="my-6 border-t border-gray-100" />
-
-                            {/* Customer */}
-                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div>
-                                    <p className="text-sm text-gray-500">
-                                        Customer
-                                    </p>
-
-                                    <p className="mt-1 font-semibold text-gray-900">
-                                        {order.user?.name ||
-                                            "Unknown"}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <p className="text-sm text-gray-500">
-                                        Email
-                                    </p>
-
-                                    <p className="mt-1 break-all font-semibold text-gray-900">
-                                        {order.user?.email ||
-                                            "—"}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <p className="text-sm text-gray-500">
-                                        Items
-                                    </p>
-
-                                    <p className="mt-1 font-semibold text-gray-900">
-                                        {order.items.length}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <p className="text-sm text-gray-500">
-                                        Total
-                                    </p>
-
-                                    <p className="mt-1 font-semibold text-gray-900">
-                                        ₹{order.total.toLocaleString(
-                                            "en-IN"
-                                        )}
-                                    </p>
-                                </div>
-
-                            </div>
-
-                            <div className="my-6 border-t border-gray-100" />
-
-                            {/* Products */}
-                            <div>
-                                <h2 className="text-lg font-bold text-gray-900">
-                                    Order Items
-                                </h2>
-
-                                <div className="mt-4 space-y-3">
-
-                                    {order.items.map(
-                                        (item, index) => (
+                                        {order.items.map((item, index) => (
                                             <div
                                                 key={`${order._id}-${index}`}
-                                                className="flex items-center justify-between rounded-lg bg-gray-50 p-4"
+                                                className="flex items-center justify-between gap-4 rounded-lg bg-gray-50 p-4"
                                             >
+                                                <div className="flex min-w-0 items-center gap-4">
+                                                    {item.image ? (
+                                                        <img
+                                                            src={item.image}
+                                                            alt={item.name}
+                                                            className="h-16 w-16 shrink-0 rounded-lg object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-gray-200 text-xs text-gray-500">
+                                                            No Image
+                                                        </div>
+                                                    )}
 
-                                                <div>
-                                                    <p className="font-semibold text-gray-900">
-                                                        {item.name}
-                                                    </p>
+                                                    <div className="min-w-0">
+                                                        <p className="truncate font-semibold text-gray-900">
+                                                            {item.name}
+                                                        </p>
 
-                                                    <p className="mt-1 text-sm text-gray-500">
-                                                        ₹{item.price.toLocaleString(
-                                                            "en-IN"
-                                                        )} ×{" "}
-                                                        {item.quantity}
-                                                    </p>
+                                                        <p className="mt-1 text-sm text-gray-500">
+                                                            ₹{item.price.toLocaleString("en-IN")} ×{" "}
+                                                            {item.quantity}
+                                                        </p>
+
+                                                        {item.product && (
+                                                            <Link
+                                                                to={`/products/${item.product}`}
+                                                                className="mt-1 inline-block text-xs font-semibold text-gray-600 hover:text-black hover:underline"
+                                                            >
+                                                                View Product
+                                                            </Link>
+                                                        )}
+                                                    </div>
                                                 </div>
 
-                                                <p className="font-semibold text-gray-900">
+                                                <p className="shrink-0 font-semibold text-gray-900">
                                                     ₹{(
-                                                        item.price *
-                                                        item.quantity
-                                                    ).toLocaleString(
-                                                        "en-IN"
-                                                    )}
+                                                        item.price * item.quantity
+                                                    ).toLocaleString("en-IN")}
                                                 </p>
-
                                             </div>
-                                        )
-                                    )}
-
-                                </div>
-                            </div>
-
-                            <div className="my-6 border-t border-gray-100" />
-
-                            {/* Payment + Address */}
-                            <div className="grid gap-6 lg:grid-cols-2">
-
-                                <div>
-                                    <h2 className="text-lg font-bold text-gray-900">
-                                        Payment
-                                    </h2>
-
-                                    <div className="mt-3 space-y-2 text-sm">
-
-                                        <p>
-                                            <span className="text-gray-500">
-                                                Method:
-                                            </span>{" "}
-                                            <span className="font-semibold uppercase">
-                                                {order.paymentMethod}
-                                            </span>
-                                        </p>
-
-                                        <p>
-                                            <span className="text-gray-500">
-                                                Status:
-                                            </span>{" "}
-                                            <span className="font-semibold capitalize">
-                                                {order.paymentStatus}
-                                            </span>
-                                        </p>
+                                        ))}
 
                                     </div>
                                 </div>
 
-                                <div>
-                                    <h2 className="text-lg font-bold text-gray-900">
-                                        Delivery Address
-                                    </h2>
+                                <div className="my-6 border-t border-gray-100" />
 
-                                    <div className="mt-3 text-sm leading-6 text-gray-600">
+                                {/* Payment + Address */}
+                                <div className="grid gap-6 lg:grid-cols-2">
 
-                                        <p className="font-semibold text-gray-900">
-                                            {order.shippingAddress.fullName}
-                                        </p>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-gray-900">
+                                            Payment
+                                        </h2>
 
-                                        <p>
-                                            {order.shippingAddress.addressLine1}
-                                        </p>
+                                        <div className="mt-3 space-y-2 text-sm">
 
-                                        {order.shippingAddress.addressLine2 && (
                                             <p>
-                                                {order.shippingAddress.addressLine2}
+                                                <span className="text-gray-500">
+                                                    Method:
+                                                </span>{" "}
+                                                <span className="font-semibold uppercase">
+                                                    {order.paymentMethod}
+                                                </span>
                                             </p>
-                                        )}
 
-                                        <p>
-                                            {order.shippingAddress.city},{" "}
-                                            {order.shippingAddress.state}
-                                        </p>
+                                            <p>
+                                                <span className="text-gray-500">
+                                                    Status:
+                                                </span>{" "}
+                                                <span className="font-semibold capitalize">
+                                                    {order.paymentStatus}
+                                                </span>
+                                            </p>
 
-                                        <p>
-                                            {order.shippingAddress.postalCode}
-                                        </p>
-
-                                        <p>
-                                            Phone:{" "}
-                                            {order.shippingAddress.phone}
-                                        </p>
-
+                                        </div>
                                     </div>
+
+                                    <div>
+                                        <h2 className="text-lg font-bold text-gray-900">
+                                            Delivery Address
+                                        </h2>
+
+                                        <div className="mt-3 text-sm leading-6 text-gray-600">
+
+                                            <p className="font-semibold text-gray-900">
+                                                {order.shippingAddress.fullName}
+                                            </p>
+
+                                            <p>
+                                                {order.shippingAddress.addressLine1}
+                                            </p>
+
+                                            {order.shippingAddress.addressLine2 && (
+                                                <p>
+                                                    {order.shippingAddress.addressLine2}
+                                                </p>
+                                            )}
+
+                                            <p>
+                                                {order.shippingAddress.city},{" "}
+                                                {order.shippingAddress.state}
+                                            </p>
+
+                                            <p>
+                                                {order.shippingAddress.postalCode}
+                                            </p>
+
+                                            <p>
+                                                Phone:{" "}
+                                                {order.shippingAddress.phone}
+                                            </p>
+
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                            </article>
+                        ))}
 
-                        </article>
-                    ))}
-
-                </div>
-                {pagination.totalPages > 1 && (
-                    <div className="flex items-center justify-center gap-4 pt-4">
-                        <button
-                            type="button"
-                            disabled={!pagination.hasPreviousPage}
-                            onClick={() =>
-                                setPage((currentPage) => currentPage - 1)
-                            }
-                            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
-                        >
-                            Previous
-                        </button>
-
-                        <span className="text-sm font-medium text-gray-600">
-                            Page {pagination.currentPage} of{" "}
-                            {pagination.totalPages}
-                        </span>
-
-                        <button
-                            type="button"
-                            disabled={!pagination.hasNextPage}
-                            onClick={() =>
-                                setPage((currentPage) => currentPage + 1)
-                            }
-                            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
-                        >
-                            Next
-                        </button>
                     </div>
-                )}
+                    {pagination.totalPages > 1 && (
+                        <div className="flex items-center justify-center gap-4 pt-4">
+                            <button
+                                type="button"
+                                disabled={!pagination.hasPreviousPage}
+                                onClick={() =>
+                                    setPage((currentPage) => currentPage - 1)
+                                }
+                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                Previous
+                            </button>
+
+                            <span className="text-sm font-medium text-gray-600">
+                                Page {pagination.currentPage} of{" "}
+                                {pagination.totalPages}
+                            </span>
+
+                            <button
+                                type="button"
+                                disabled={!pagination.hasNextPage}
+                                onClick={() =>
+                                    setPage((currentPage) => currentPage + 1)
+                                }
+                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
                 </>
             )}
         </section>

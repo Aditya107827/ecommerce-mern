@@ -13,6 +13,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const addressRoutes = require("./routes/addressRoutes");
+const storeSettingsRoutes = require("./routes/storeSettingsRoutes");
 const helmet = require("helmet");
 const multer = require("multer");
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/images", imageRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/addresses", addressRoutes);
+app.use("/api/store-settings", storeSettingsRoutes);
 // Test Route
 app.get("/", (req, res) => {
     res.json({

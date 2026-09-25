@@ -47,18 +47,18 @@ function AdminLayout() {
             </header>
 
 
-            <div className="flex min-h-[calc(100vh-73px)]">
+            <div className="flex min-h-[calc(100vh-73px)] flex-col md:flex-row">
 
                 {/* Sidebar */}
-                <aside className="w-64 shrink-0 border-r bg-white">
+                <aside className="w-full shrink-0 border-b bg-white md:w-64 md:border-b-0 md:border-r">
 
-                    <nav className="space-y-2 p-4">
+                    <nav className="flex gap-1.5 overflow-x-auto p-3 md:block md:space-y-1.5 md:p-4">
 
                         <NavLink
                             to="/admin"
                             end
                             className={({ isActive }) =>
-                                `block rounded-lg px-4 py-3 text-sm font-medium ${isActive
+                                `block shrink-0 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive
                                     ? "bg-black text-white"
                                     : "text-gray-700 hover:bg-gray-100"
                                 }`
@@ -71,7 +71,7 @@ function AdminLayout() {
                         <NavLink
                             to="/admin/products"
                             className={({ isActive }) =>
-                                `block rounded-lg px-4 py-3 text-sm font-medium ${isActive
+                                `block shrink-0 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive
                                     ? "bg-black text-white"
                                     : "text-gray-700 hover:bg-gray-100"
                                 }`
@@ -84,7 +84,7 @@ function AdminLayout() {
                         <NavLink
                             to="/admin/orders"
                             className={({ isActive }) =>
-                                `block rounded-lg px-4 py-3 text-sm font-medium ${isActive
+                                `block shrink-0 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive
                                     ? "bg-black text-white"
                                     : "text-gray-700 hover:bg-gray-100"
                                 }`
@@ -96,7 +96,7 @@ function AdminLayout() {
                         <NavLink
                             to="/admin/reviews"
                             className={({ isActive }) =>
-                                `block rounded-lg px-4 py-3 text-sm font-medium ${isActive
+                                `block shrink-0 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive
                                     ? "bg-black text-white"
                                     : "text-gray-700 hover:bg-gray-100"
                                 }`
@@ -105,13 +105,25 @@ function AdminLayout() {
                             Reviews
                         </NavLink>
 
+                        <NavLink
+                            to="/admin/settings"
+                            className={({ isActive }) =>
+                                `block shrink-0 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive
+                                    ? "bg-black text-white"
+                                    : "text-gray-700 hover:bg-gray-100"
+                                }`
+                            }
+                        >
+                            Store Settings
+                        </NavLink>
+
                     </nav>
 
                 </aside>
 
 
                 {/* Admin Content */}
-                <main className="flex-1 p-6">
+                <main className="min-w-0 flex-1 p-4 md:p-6">
                     <Outlet />
                 </main>
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
+import { Search, SearchX } from "lucide-react";
 import ProductCard from "../../components/product/ProductCard";
 import { getProducts, getCategories } from "../../services/productService";
 
@@ -33,6 +33,10 @@ function Products() {
     useEffect(() => {
         setPage(1);
     }, [search, category, sort]);
+
+    useEffect(() => {
+        setCategory(categoryFromUrl || "all");
+    }, [categoryFromUrl]);
 
 
     useEffect(() => {
@@ -118,62 +122,81 @@ function Products() {
                 </div>
 
                 {/* Filters */}
-                <div className="mb-8 flex flex-col gap-4 md:flex-row">
+                {/* Filters */}
+                <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
 
-                    <input
-                        type="search"
-                        value={search}
-                        onChange={(event) =>
-                            setSearch(event.target.value)
-                        }
-                        placeholder="Search products..."
-                        className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black md:max-w-md"
-                    />
+                        {/* Search */}
+                        <div className="relative flex-1">
+                            <Search
+                                size={18}
+                                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                            />
 
-                    <select
-                        value={category}
-                        onChange={(event) =>
-                            setCategory(event.target.value)
-                        }
-                        className="rounded-lg border border-gray-300 px-4 py-3 outline-none"
-                    >
-                        {categories.map((item) => (
-                            <option key={item} value={item}>
-                                {item === "all"
-                                    ? "All Categories"
-                                    : item}
+                            <input
+                                type="search"
+                                value={search}
+                                onChange={(event) => setSearch(event.target.value)}
+                                placeholder="Search products..."
+                                className="w-full rounded-xl border border-gray-300 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-100"
+                            />
+                        </div>
+
+                        {/* Category */}
+                        <select
+                            value={category}
+                            onChange={(event) => setCategory(event.target.value)}
+                            className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-100 sm:w-auto"
+                        >
+                            {categories.map((item) => (
+                                <option key={item} value={item}>
+                                    {item === "all" ? "All Categories" : item}
+                                </option>
+                            ))}
+                        </select>
+
+                        {/* Sort */}
+                        <select
+                            value={sort}
+                            onChange={(event) => setSort(event.target.value)}
+                            className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-100 sm:w-auto"
+                        >
+                            <option value="newest">
+                                Newest
                             </option>
-                        ))}
-                    </select>
 
-                    <select
-                        value={sort}
-                        onChange={(event) =>
-                            setSort(event.target.value)
-                        }
-                        className="rounded-lg border border-gray-300 px-4 py-3 outline-none"
-                    >
-                        <option value="newest">
-                            Newest
-                        </option>
+                            <option value="price_asc">
+                                Price: Low to High
+                            </option>
 
-                        <option value="price_asc">
-                            Price: Low to High
-                        </option>
+                            <option value="price_desc">
+                                Price: High to Low
+                            </option>
+                        </select>
 
-                        <option value="price_desc">
-                            Price: High to Low
-                        </option>
-                    </select>
-
+                    </div>
                 </div>
 
                 {/* Loading */}
+                {/* Loading */}
                 {loading && (
-                    <div className="py-20 text-center">
-                        <p className="text-gray-500">
-                            Loading products...
-                        </p>
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {Array.from({ length: 8 }).map((_, index) => (
+                            <div
+                                key={index}
+                                className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
+                            >
+                                <div className="h-64 animate-pulse bg-gray-200" />
+
+                                <div className="space-y-3 p-5">
+                                    <div className="h-3 w-20 animate-pulse rounded bg-gray-200" />
+                                    <div className="h-5 w-3/4 animate-pulse rounded bg-gray-200" />
+                                    <div className="h-5 w-24 animate-pulse rounded bg-gray-200" />
+
+                                    <div className="mt-5 h-11 w-full animate-pulse rounded-lg bg-gray-200" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
 
@@ -199,7 +222,7 @@ function Products() {
 
                         {products.length > 0 ? (
                             <>
-                                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                                <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                                     {products.map(
                                         (product) => (
                                             <ProductCard
@@ -250,15 +273,34 @@ function Products() {
                             </>
 
                         ) : (
-                            <div className="py-20 text-center">
-                                <h2 className="text-xl font-semibold">
+                            <div className="flex min-h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-6 text-center">
+                                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+                                    <SearchX
+                                        size={26}
+                                        className="text-gray-400"
+                                    />
+                                </div>
+
+                                <h2 className="mt-5 text-xl font-semibold text-gray-900">
                                     No products found
                                 </h2>
 
-                                <p className="mt-2 text-sm text-gray-500">
-                                    Try a different search or
-                                    category.
+                                <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
+                                    We couldn't find any products matching your search or selected category.
+                                    Try changing your filters or browse all products.
                                 </p>
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSearch("");
+                                        setCategory("all");
+                                        setPage(1);
+                                    }}
+                                    className="mt-6 rounded-lg bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                                >
+                                    View All Products
+                                </button>
                             </div>
                         )}
                     </>

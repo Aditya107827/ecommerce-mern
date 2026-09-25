@@ -38,20 +38,25 @@ function ProductCard({ product }) {
             {/* Product Image */}
             <div className="relative h-64 overflow-hidden bg-gray-100">
 
-                {imageUrl ? (
-                    <img
-                        src={imageUrl}
-                        alt={product.name}
-                        className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                        loading="lazy"
-                    />
-                ) : (
-                    <div className="flex h-full items-center justify-center">
-                        <span className="text-sm text-gray-400">
-                            Product Image
-                        </span>
-                    </div>
-                )}
+                <Link
+                    to={`/products/${product.id}`}
+                    className="block h-full w-full"
+                >
+                    {imageUrl ? (
+                        <img
+                            src={imageUrl}
+                            alt={product.name}
+                            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                            loading="lazy"
+                        />
+                    ) : (
+                        <div className="flex h-full items-center justify-center">
+                            <span className="text-sm text-gray-400">
+                                Product Image
+                            </span>
+                        </div>
+                    )}
+                </Link>
 
                 {/* Wishlist Button */}
                 <button
@@ -92,7 +97,9 @@ function ProductCard({ product }) {
             <div className="p-5">
 
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                    {product.category}
+                    {product.category
+                        ?.replace(/-/g, " ")
+                        .toUpperCase()}
                 </p>
 
 

@@ -67,15 +67,25 @@ function Wishlist() {
               key={product.id}
               className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
             >
-
+              
               {/* Image */}
               <Link
                 to={`/products/${product.id}`}
-                className="flex h-64 items-center justify-center bg-gray-100"
+                className="block h-64 overflow-hidden bg-gray-100"
               >
-                <span className="text-sm text-gray-400">
-                  Product Image
-                </span>
+                {product.images?.[0]?.url || product.image ? (
+                  <img
+                    src={product.images?.[0]?.url || product.image}
+                    alt={product.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center">
+                    <span className="text-sm text-gray-400">
+                      Product Image
+                    </span>
+                  </div>
+                )}
               </Link>
 
               {/* Details */}

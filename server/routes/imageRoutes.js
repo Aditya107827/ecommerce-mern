@@ -3,6 +3,7 @@ const multer = require("multer");
 
 const {
     uploadProductImage,
+    uploadHeroImage
 } = require("../controllers/imageController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -36,6 +37,13 @@ router.post(
     adminOnly,
     upload.array("images", 6),
     uploadProductImage
+);
+router.post(
+    "/hero",
+    protect,
+    adminOnly,
+    upload.single("image"),
+    uploadHeroImage
 );
 
 module.exports = router;

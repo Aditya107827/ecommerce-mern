@@ -8,7 +8,7 @@ const getWishlist = async (req, res) => {
             user: req.user._id,
         }).populate(
             "products",
-            "name price image category stock featured"
+            "name price images image category stock featured"
         );
 
         // Create wishlist if it doesn't exist
@@ -83,7 +83,7 @@ const addToWishlist = async (req, res) => {
 
         await wishlist.populate(
             "products",
-            "name price image category stock featured"
+            "name price images image category stock featured"
         );
 
         return res.status(200).json({
@@ -138,7 +138,7 @@ const removeFromWishlist = async (req, res) => {
 
         await wishlist.populate(
             "products",
-            "name price image category stock featured"
+            "name price images image category stock featured"
         );
 
         return res.status(200).json({

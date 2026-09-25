@@ -14,6 +14,7 @@ function Account() {
     const { user, logout } = useAuth();
 
     const [editingProfile, setEditingProfile] = useState(false);
+    const [showProfileDetails, setShowProfileDetails] = useState(false);
     const [profileData, setProfileData] = useState({
         name: user?.name || "",
         phone: user?.phone || "",
@@ -24,6 +25,7 @@ function Account() {
     const [addresses, setAddresses] = useState([]);
     const [addressLoading, setAddressLoading] = useState(true);
     const [addressError, setAddressError] = useState("");
+    const [expandedAddressId, setExpandedAddressId] = useState(null);
 
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [editingAddressId, setEditingAddressId] = useState(null);
@@ -85,7 +87,7 @@ function Account() {
 
             window.location.reload();
         } catch (error) {
-            
+
 
             setProfileError(
                 error.response?.data?.message ||
@@ -451,35 +453,51 @@ function Account() {
                                 </p>
                             </div>
 
-                            <div>
-                                <p className="text-sm text-gray-500">
-                                    Email
-                                </p>
 
-                                <p className="mt-1 font-medium text-gray-900">
-                                    {user?.email || "—"}
-                                </p>
-                            </div>
 
-                            <div>
-                                <p className="text-sm text-gray-500">
-                                    Phone
-                                </p>
+                            {showProfileDetails && (
+                                <>
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Email
+                                        </p>
 
-                                <p className="mt-1 font-medium text-gray-900">
-                                    {user?.phone || "Not provided"}
-                                </p>
-                            </div>
+                                        <p className="mt-1 font-medium text-gray-900">
+                                            {user?.email || "—"}
+                                        </p>
+                                    </div>
 
-                            <div>
-                                <p className="text-sm text-gray-500">
-                                    Account Type
-                                </p>
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Phone
+                                        </p>
 
-                                <p className="mt-1 font-medium capitalize text-gray-900">
-                                    {user?.role || "customer"}
-                                </p>
-                            </div>
+                                        <p className="mt-1 font-medium text-gray-900">
+                                            {user?.phone || "Not provided"}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Account Type
+                                        </p>
+
+                                        <p className="mt-1 font-medium capitalize text-gray-900">
+                                            {user?.role || "customer"}
+                                        </p>
+                                    </div>
+                                </>
+                            )}
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setShowProfileDetails((current) => !current)
+                                }
+                                className="text-sm font-semibold text-gray-700 hover:text-black"
+                            >
+                                {showProfileDetails ? "Hide Details ↑" : "View Details ↓"}
+                            </button>
                         </div>
                     )}
 
@@ -734,8 +752,8 @@ function Account() {
                                     className="rounded-xl border border-gray-200 p-5"
                                 >
                                     <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <div className="flex items-center gap-2">
+                                        <div className="min-w-0">
+                                            <div className="flex flex-wrap items-center gap-2">
                                                 <h3 className="font-semibold text-gray-900">
                                                     {address.label}
                                                 </h3>
@@ -752,20 +770,43 @@ function Account() {
                                             </p>
 
                                             <p className="mt-1 text-sm text-gray-600">
-                                                {address.phone}
-                                            </p>
-
-                                            <p className="mt-3 text-sm leading-6 text-gray-600">
-                                                {address.addressLine1}
-                                                {address.addressLine2 &&
-                                                    `, ${address.addressLine2}`}
-                                                <br />
                                                 {address.city}, {address.state}
-                                                <br />
-                                                {address.postalCode}, {address.country}
                                             </p>
-                                        </div>
 
+                                            {expandedAddressId === address._id && (
+                                                <div className="mt-3">
+                                                    <p className="text-sm text-gray-600">
+                                                        {address.phone}
+                                                    </p>
+
+                                                    <p className="mt-2 text-sm leading-6 text-gray-600">
+                                                        {address.addressLine1}
+                                                        {address.addressLine2 &&
+                                                            `, ${address.addressLine2}`}
+                                                        <br />
+                                                        {address.city}, {address.state}
+                                                        <br />
+                                                        {address.postalCode}, {address.country}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setExpandedAddressId((current) =>
+                                                        current === address._id
+                                                            ? null
+                                                            : address._id
+                                                    )
+                                                }
+                                                className="mt-3 text-sm font-semibold text-gray-700 hover:text-black"
+                                            >
+                                                {expandedAddressId === address._id
+                                                    ? "Hide Details ↑"
+                                                    : "View Details ↓"}
+                                            </button>
+                                        </div>
 
                                         <div className="flex shrink-0 flex-col gap-2">
                                             {!address.isDefault && (
@@ -774,7 +815,7 @@ function Account() {
                                                     onClick={() =>
                                                         handleSetDefaultAddress(address._id)
                                                     }
-                                                    className="text-sm font-medium text-gray-700 hover:text-black"
+                                                    className="rounded-md border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-cyan-700 transition hover:border-gray-300 hover:bg-gray-50"
                                                 >
                                                     Set Default
                                                 </button>
@@ -782,8 +823,10 @@ function Account() {
 
                                             <button
                                                 type="button"
-                                                onClick={() => handleEditAddress(address)}
-                                                className="text-sm font-medium text-gray-700 hover:text-black"
+                                                onClick={() =>
+                                                    handleEditAddress(address)
+                                                }
+                                                className="rounded-md border border-red-200 px-2.5 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 hover:text-red-700"
                                             >
                                                 Edit
                                             </button>
@@ -793,7 +836,7 @@ function Account() {
                                                 onClick={() =>
                                                     handleDeleteAddress(address._id)
                                                 }
-                                                className="text-sm font-medium text-red-600 hover:text-red-700"
+                                                className="rounded-md border border-red-200 px-2.5 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 hover:text-red-700"
                                             >
                                                 Delete
                                             </button>
@@ -816,7 +859,7 @@ function Account() {
 
                     <Link
                         to="/orders"
-                        className="mt-5 inline-block rounded-lg bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                        className="inline-flex items-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-800"
                     >
                         My Orders
                     </Link>

@@ -1,17 +1,17 @@
 export const categories = [
     {
-        id: "resin-photo-frames",
+        id: "phot frame",
         name: "Resin Photo Frames",
-        description: "Personalozed frames for your special memories.",
+        description: "Personalized frames for your special memories.",
     },
     {
         id: "candles",
         name: "Candles",
-        description:"Beautiful candles for every occation.",
+        description: "Beautiful candles for every occasion.",
     },
     {
-        id:"calendar",
-        name:"Calendar",
-        description:"Elegant calendeer for home and offices."
+        id: "calendars",
+        name: "Calendar",
+        description: "Elegant calendars for home and offices.",
     },
 ];

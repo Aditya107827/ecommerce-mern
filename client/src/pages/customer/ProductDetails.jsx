@@ -421,7 +421,7 @@ function ProductDetails() {
                     {/* Product Images */}
                     <div>
                         {/* Main Image */}
-                        <div className="flex min-h-[500px] items-center justify-center overflow-hidden rounded-2xl bg-gray-100">
+                        <div className="flex h-[360px] items-center justify-center overflow-hidden rounded-2xl bg-gray-100 sm:min-h-[500px]">
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[selectedImage]?.url}
@@ -463,7 +463,9 @@ function ProductDetails() {
                     <div className="flex flex-col justify-center">
 
                         <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">
-                            {product.category}
+                            {product.category
+                                ?.replace(/-/g, " ")
+                                .toUpperCase()}
                         </p>
 
                         <h1 className="mt-3 text-4xl font-bold tracking-tight text-gray-900">
