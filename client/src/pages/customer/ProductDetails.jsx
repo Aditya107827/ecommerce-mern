@@ -1,8 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { addProductToCart } from "../../store/cartSlice";
+import { toast } from "react-hot-toast";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -17,6 +18,7 @@ function ProductDetails() {
 
     const dispatch = useDispatch();
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const wishlistItems = useSelector(
         (state) => state.wishlist.items
@@ -541,14 +543,26 @@ function ProductDetails() {
                             <button
                                 type="button"
                                 disabled={product.stock <= 0}
-                                onClick={() =>
+                                onClick={() => {
+                                    if (!user) {
+                                        toast.error("Please login to add products to your cart.");
+                                        navigate("/login", {
+                                            state: {
+                                                from: {
+                                                    pathname: `/products/${product.id}`,
+                                                },
+                                            },
+                                        });
+                                        return;
+                                    }
+
                                     dispatch(
                                         addProductToCart({
                                             productId: product.id,
                                             quantity: quantity,
                                         })
-                                    )
-                                }
+                                    );
+                                }}
                                 className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-black px-6 py-3 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400"
                             >
                                 <ShoppingCart size={18} />
@@ -565,11 +579,21 @@ function ProductDetails() {
                                         : "Add to wishlist"
                                 }
                                 onClick={() => {
+                                    if (!user) {
+                                        toast.error("Please login to manage your wishlist.");
+                                        navigate("/login", {
+                                            state: {
+                                                from: {
+                                                    pathname: `/products/${product.id}`,
+                                                },
+                                            },
+                                        });
+                                        return;
+                                    }
+
                                     if (isWishlisted) {
                                         dispatch(
-                                            removeProductFromWishlist(
-                                                product.id
-                                            )
+                                            removeProductFromWishlist(product.id)
                                         );
                                     } else {
                                         dispatch(
