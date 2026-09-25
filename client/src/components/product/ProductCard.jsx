@@ -1,7 +1,8 @@
 import { Heart, ShoppingCart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-hot-toast";
 import {
     addProductToWishlist,
     removeProductFromWishlist,
@@ -13,6 +14,9 @@ import { addProductToCart } from "../../store/cartSlice";
 function ProductCard({ product }) {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user } = useAuth();
+    
 
     const wishlistItems = useSelector(
         (state) => state.wishlist.items
@@ -68,6 +72,18 @@ function ProductCard({ product }) {
                             : `Add ${product.name} to wishlist`
                     }
                     onClick={() => {
+                        if (!user) {
+                            toast.error("Please login to manage your wishlist.");
+                            navigate("/login", {
+                                state: {
+                                    from: {
+                                        pathname: `/products/${product.id}`,
+                                    },
+                                },
+                            });
+                            return;
+                        }
+
                         if (isWishlisted) {
                             dispatch(
                                 removeProductFromWishlist(product.id)
@@ -118,14 +134,26 @@ function ProductCard({ product }) {
 
                 <button
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
+                        if (!user) {
+                            toast.error("Please login to add products to your cart.");
+                            navigate("/login", {
+                                state: {
+                                    from: {
+                                        pathname: `/products/${product.id}`,
+                                    },
+                                },
+                            });
+                            return;
+                        }
+
                         dispatch(
                             addProductToCart({
                                 productId: product.id,
                                 quantity: 1,
                             })
-                        )
-                    }
+                        );
+                    }}
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
                 >
 

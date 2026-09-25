@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import Home from "../pages/customer/Home";
@@ -25,6 +26,7 @@ import AdminRoute from "./AdminRoute";
 function AppRoutes() {
     return (
         <BrowserRouter>
+            <Toaster />
             <Routes>
 
                 {/* Customer */}
