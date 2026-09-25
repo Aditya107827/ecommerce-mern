@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
 const cloudinary = require("../config/cloudinary");
-const StoreSettings = require("../models/storeSettings");
+const StoreSettings = require("../models/StoreSettings");
 const uploadProductImage = async (req, res) => {
     const uploadedImages = [];
 
