@@ -418,6 +418,13 @@ function ProductDetails() {
         <section className="py-12">
             <div className="mx-auto max-w-7xl px-6">
 
+                <Link
+                    to="/products"
+                    className="mb-3 ml-4 hidden items-center rounded-md border border-gray-200 bg-black-100 px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-200 hover:text-black md:inline-flex"
+                >
+                    ← Back
+                </Link>
+
                 <div className="grid gap-10 lg:grid-cols-2">
 
                     {/* Product Images */}

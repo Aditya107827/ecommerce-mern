@@ -32,7 +32,7 @@ function Navbar() {
     };
 
     return (
-        <header className="border-b bg-white">
+        <header className="border-b bg-slate-50">
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
                 {/* Logo */}
@@ -68,7 +68,8 @@ function Navbar() {
                     {/* Search */}
                     <button
                         type="button"
-                        aria-label="Search"
+                        aria-label="Search products"
+                        onClick={() => navigate("/products")}
                     >
                         <Search size={20} />
                     </button>
