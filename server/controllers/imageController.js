@@ -173,7 +173,129 @@ const uploadHeroImage = async (req, res) => {
     }
 };
 
+const getHeroSlides = async (req, res) => {
+    try {
+        const settings = await StoreSettings.findOne();
+
+        if (!settings) {
+            return res.status(404).json({
+                message: "Store settings not found",
+            });
+        }
+
+        return res.status(200).json({
+            heroSlides: settings.heroSlides || [],
+        });
+    } catch (error) {
+        console.error("Get hero slides error:", error);
+
+        return res.status(500).json({
+            message: "Failed to load hero slides",
+        });
+    }
+};
+
+const uploadHeroSlide = async (req, res) => {
+    let uploadedImage = null;
+
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                message: "Hero slide image is required",
+            });
+        }
+
+        if (!req.body.productId) {
+            return res.status(400).json({
+                message: "Product is required",
+            });
+        }
+
+        const settings = await StoreSettings.findOne();
+
+        if (!settings) {
+            return res.status(404).json({
+                message: "Store settings not found",
+            });
+        }
+
+        if (settings.heroSlides.length >= 5) {
+            return res.status(400).json({
+                message: "Maximum 5 hero slides are allowed",
+            });
+        }
+
+        const result = await cloudinary.uploader.upload(
+            req.file.path,
+            {
+                folder: "e-shop/hero-slides",
+                resource_type: "image",
+            }
+        );
+
+        uploadedImage = {
+            url: result.secure_url,
+            publicId: result.public_id,
+        };
+
+        settings.heroSlides.push({
+            image: uploadedImage,
+            productId: req.body.productId,
+        });
+
+        await settings.save();
+
+        try {
+            await fs.unlink(req.file.path);
+        } catch (cleanupError) {
+            console.error(
+                "Temporary hero slide cleanup failed:",
+                cleanupError.message
+            );
+        }
+
+        return res.status(201).json({
+            message: "Hero slide added successfully",
+            heroSlide: settings.heroSlides[
+                settings.heroSlides.length - 1
+            ],
+        });
+    } catch (error) {
+        console.error("Hero slide upload error:", error);
+
+        if (uploadedImage?.publicId) {
+            try {
+                await cloudinary.uploader.destroy(
+                    uploadedImage.publicId
+                );
+            } catch (cleanupError) {
+                console.error(
+                    "Hero slide Cloudinary cleanup failed:",
+                    cleanupError.message
+                );
+            }
+        }
+
+        if (req.file?.path) {
+            try {
+                await fs.unlink(req.file.path);
+            } catch (cleanupError) {
+                console.error(
+                    "Temporary hero slide cleanup failed:",
+                    cleanupError.message
+                );
+            }
+        }
+
+        return res.status(500).json({
+            message: "Failed to add hero slide",
+        });
+    }
+};
+
 module.exports = {
     uploadProductImage,
     uploadHeroImage,
+    getHeroSlides,
+    uploadHeroSlide,
 };

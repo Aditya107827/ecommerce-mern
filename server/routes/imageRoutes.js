@@ -3,7 +3,9 @@ const multer = require("multer");
 
 const {
     uploadProductImage,
-    uploadHeroImage
+    uploadHeroImage,
+    getHeroSlides,
+    uploadHeroSlide,
 } = require("../controllers/imageController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -44,6 +46,18 @@ router.post(
     adminOnly,
     upload.single("image"),
     uploadHeroImage
+);
+router.get(
+    "/hero-slides",
+    getHeroSlides
+);
+
+router.post(
+    "/hero-slide",
+    protect,
+    adminOnly,
+    upload.single("image"),
+    uploadHeroSlide
 );
 
 module.exports = router;

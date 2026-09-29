@@ -12,6 +12,25 @@ const storeSettingsSchema = new mongoose.Schema(
                 default: "",
             },
         },
+        heroSlides: [
+            {
+                image: {
+                    url: {
+                        type: String,
+                        default: "",
+                    },
+                    publicId: {
+                        type: String,
+                        default: "",
+                    },
+                },
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Product",
+                    default: null,
+                },
+            },
+        ],
     },
     { timestamps: true }
 );
