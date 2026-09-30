@@ -7,6 +7,8 @@ const getProducts = async (req, res) => {
         const {
             search,
             category,
+            minPrice,
+            maxPrice,
             page = 1,
             limit = 12,
             sort = "newest",
@@ -43,6 +45,32 @@ const getProducts = async (req, res) => {
 
         if (category?.trim() && category !== "all") {
             filter.category = category.trim();
+        }
+
+        // Price range filter
+        const hasMinPrice =
+            minPrice !== undefined &&
+            String(minPrice).trim() !== "";
+
+        const hasMaxPrice =
+            maxPrice !== undefined &&
+            String(maxPrice).trim() !== "";
+
+        const parsedMinPrice = Number(minPrice);
+        const parsedMaxPrice = Number(maxPrice);
+
+        if (hasMinPrice && Number.isFinite(parsedMinPrice)) {
+            filter.price = {
+                ...(filter.price || {}),
+                $gte: parsedMinPrice,
+            };
+        }
+
+        if (hasMaxPrice && Number.isFinite(parsedMaxPrice)) {
+            filter.price = {
+                ...(filter.price || {}),
+                $lte: parsedMaxPrice,
+            };
         }
 
         const pageNumber = Math.max(

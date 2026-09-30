@@ -21,11 +21,13 @@ import AdminOrders from "../pages/admin/AdminOrders";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminReviews from "../pages/admin/AdminReviews";
 import AdminSettings from "../pages/admin/AdminSettings";
+import ScrollToTop from "../components/ScrollToTop";
 import AdminRoute from "./AdminRoute";
 
 function AppRoutes() {
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Toaster />
             <Routes>
 

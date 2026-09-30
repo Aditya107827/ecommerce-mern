@@ -52,7 +52,7 @@ function AdminSettings() {
         fetchHeroSlides();
     }, []);
 
-    
+
 
     const handleFileChange = (event) => {
         const file = event.target.files?.[0];
@@ -122,6 +122,31 @@ function AdminSettings() {
             );
         } finally {
             setHeroSlideUploading(false);
+        }
+    };
+
+    const handleDeleteHeroSlide = async (slideId) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this hero slide?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await api.delete(`/images/hero-slide/${slideId}`);
+
+            setHeroSlides((currentSlides) =>
+                currentSlides.filter(
+                    (slide) => slide._id !== slideId
+                )
+            );
+        } catch (error) {
+            console.error(
+                "Failed to delete hero slide:",
+                error
+            );
         }
     };
 
@@ -234,18 +259,20 @@ function AdminSettings() {
 
                         {/* Image */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">
+                            <label className="mb-1 block text-sm font-medium text-gray-700">
                                 Slide Image
                             </label>
 
                             <input
                                 type="file"
-                                accept="image/jpeg,image/png,image/webp"
-                                onChange={(e) =>
-                                    setHeroSlideFile(e.target.files?.[0] || null)
-                                }
-                                className="mt-2 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
+                                accept="image/*"
+                                onChange={(e) => setHeroSlideFile(e.target.files[0])}
+                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
                             />
+
+                            <p className="mt-1 text-xs text-gray-500">
+                                Recommended size: 1920 × 560 px
+                            </p>
                         </div>
 
                         {/* Product */}
@@ -326,7 +353,6 @@ function AdminSettings() {
                                 </div>
 
                                 <div className="p-4">
-
                                     <p className="text-sm font-semibold text-gray-900">
                                         Slide {index + 1}
                                     </p>
@@ -339,6 +365,15 @@ function AdminSettings() {
                                         )?.name || "Product not found"}
                                     </p>
 
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            handleDeleteHeroSlide(slide._id)
+                                        }
+                                        className="mt-4 w-full rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+                                    >
+                                        Delete Slide
+                                    </button>
                                 </div>
 
                             </div>

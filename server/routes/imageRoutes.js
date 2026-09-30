@@ -6,6 +6,7 @@ const {
     uploadHeroImage,
     getHeroSlides,
     uploadHeroSlide,
+    deleteHeroSlide,
 } = require("../controllers/imageController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -58,6 +59,13 @@ router.post(
     adminOnly,
     upload.single("image"),
     uploadHeroSlide
+);
+
+router.delete(
+    "/hero-slide/:id",
+    protect,
+    adminOnly,
+    deleteHeroSlide
 );
 
 module.exports = router;

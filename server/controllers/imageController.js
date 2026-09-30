@@ -1,6 +1,7 @@
 const fs = require("fs/promises");
 const cloudinary = require("../config/cloudinary");
 const StoreSettings = require("../models/StoreSettings");
+const mongoose = require("mongoose");
 const uploadProductImage = async (req, res) => {
     const uploadedImages = [];
 
@@ -293,9 +294,78 @@ const uploadHeroSlide = async (req, res) => {
     }
 };
 
+const deleteHeroSlide = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Validate slide ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid hero slide ID",
+            });
+        }
+
+        const settings = await StoreSettings.findOne();
+
+        if (!settings) {
+            return res.status(404).json({
+                message: "Store settings not found",
+            });
+        }
+
+        // Find slide
+        const slide = settings.heroSlides.id(id);
+
+        if (!slide) {
+            return res.status(404).json({
+                message: "Hero slide not found",
+            });
+        }
+
+        // Save Cloudinary public ID before removing slide
+        const publicId = slide.image?.publicId;
+
+        // Remove slide from MongoDB
+        slide.deleteOne();
+
+        await settings.save();
+
+        // Delete image from Cloudinary
+        if (publicId) {
+            try {
+                await cloudinary.uploader.destroy(
+                    publicId,
+                    {
+                        resource_type: "image",
+                    }
+                );
+            } catch (cloudinaryError) {
+                console.error(
+                    "Hero slide Cloudinary deletion failed:",
+                    cloudinaryError.message
+                );
+            }
+        }
+
+        return res.status(200).json({
+            message: "Hero slide deleted successfully",
+        });
+    } catch (error) {
+        console.error(
+            "Delete hero slide error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Failed to delete hero slide",
+        });
+    }
+};
+
 module.exports = {
     uploadProductImage,
     uploadHeroImage,
     getHeroSlides,
     uploadHeroSlide,
+    deleteHeroSlide,
 };

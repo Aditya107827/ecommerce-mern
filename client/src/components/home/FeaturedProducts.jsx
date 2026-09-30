@@ -31,29 +31,28 @@ function FeaturedProducts() {
     }, []);
 
     return (
-        <section className="bg-gray-50 py-16 sm:py-20">
+        <section className="bg-white py-16 sm:py-20">
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* Section Header */}
                 <div className="mb-10 flex items-end justify-between gap-4">
                     <div>
                         <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">
-                            Featured
+                            Featured Products
                         </p>
 
                         <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                            Our popular products
+                            Our most loved picks
                         </h2>
 
                         <p className="mt-3 max-w-xl text-sm leading-6 text-gray-600 sm:text-base">
-                            Explore some of our most popular products,
-                            carefully selected for you.
+                            Discover some of our most popular products, selected just for you.
                         </p>
                     </div>
 
                     <Link
                         to="/products"
-                        className="hidden shrink-0 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 sm:block"
+                        className="hidden shrink-0 items-center rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:border-gray-400 hover:bg-gray-50 sm:inline-flex"
                     >
                         View all →
                     </Link>

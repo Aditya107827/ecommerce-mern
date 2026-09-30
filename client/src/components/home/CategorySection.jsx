@@ -27,7 +27,7 @@ function CategorySection() {
     }, []);
 
     return (
-        <section className="bg-white py-16 sm:py-20">
+        <section className="bg-white pt-10 pb-16 sm:pt-12 sm:pb-20">
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* Section Header */}
