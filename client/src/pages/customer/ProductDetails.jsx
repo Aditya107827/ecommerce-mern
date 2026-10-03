@@ -415,12 +415,12 @@ function ProductDetails() {
         : null;
 
     return (
-        <section className="py-12">
+        <section className="pt-6 pb-12">
             <div className="mx-auto max-w-7xl px-6">
 
                 <Link
                     to="/products"
-                    className="mb-3 ml-4 hidden items-center rounded-md border border-gray-200 bg-black-100 px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-200 hover:text-black md:inline-flex"
+                    className="mb-5 hidden items-center text-sm font-medium text-gray-500 transition hover:text-gray-900 md:inline-flex"
                 >
                     ← Back
                 </Link>
@@ -430,12 +430,12 @@ function ProductDetails() {
                     {/* Product Images */}
                     <div>
                         {/* Main Image */}
-                        <div className="flex h-[360px] items-center justify-center overflow-hidden rounded-2xl bg-gray-100 sm:min-h-[500px]">
+                        <div className="group relative flex h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-[#f8f6f2] sm:h-[500px]">
                             {galleryImages.length > 0 ? (
                                 <img
                                     src={galleryImages[selectedImage]?.url}
                                     alt={product.name}
-                                    className="max-h-[500px] max-w-full object-contain"
+                                    className="max-h-[90%] max-w-[90%] object-contain transition duration-500 ease-out group-hover:scale-[1.03]"
                                 />
                             ) : (
                                 <span className="text-sm text-gray-400">
@@ -446,21 +446,21 @@ function ProductDetails() {
 
                         {/* Image Thumbnails */}
                         {galleryImages.length > 1 && (
-                            <div className="mt-4 flex gap-3 overflow-x-auto">
+                            <div className="scrollbar-hide mt-4 flex gap-3 overflow-x-auto overflow-y-hidden">
                                 {galleryImages.map((image, index) => (
                                     <button
                                         key={image.publicId || index}
                                         type="button"
                                         onClick={() => setSelectedImage(index)}
-                                        className={`h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 ${selectedImage === index
-                                            ? "border-black"
-                                            : "border-gray-200"
+                                        className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 bg-[#f8f6f2] transition-all duration-300 ${selectedImage === index
+                                            ? "border-[#172033] shadow-md scale-[1.03]"
+                                            : "border-gray-200 hover:border-gray-400 hover:shadow-sm"
                                             }`}
                                     >
                                         <img
                                             src={image.url}
                                             alt={`${product.name} ${index + 1}`}
-                                            className="h-full w-full object-cover"
+                                            className="h-full w-full object-cover transition duration-300 hover:scale-105"
                                         />
                                     </button>
                                 ))}
@@ -471,27 +471,27 @@ function ProductDetails() {
                     {/* Product Information */}
                     <div className="flex flex-col justify-center">
 
-                        <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
                             {product.category
                                 ?.replace(/-/g, " ")
                                 .toUpperCase()}
                         </p>
 
-                        <h1 className="mt-3 text-4xl font-bold tracking-tight text-gray-900">
+                        <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-gray-900 sm:text-4xl lg:text-[42px]">
                             {product.name}
                         </h1>
 
-                        <p className="mt-5 text-2xl font-bold text-gray-900">
+                        <p className="mt-5 text-3xl font-bold tracking-tight text-[#172033]">
                             ₹{product.price.toLocaleString("en-IN")}
                         </p>
 
-                        <p className="mt-6 leading-7 text-gray-600">
+                        <p className="mt-5 max-w-xl text-[15px] leading-7 text-gray-600">
                             {product.description ||
                                 "Beautifully crafted product designed to add a special touch to your space and memories."}
                         </p>
 
                         {/* Stock */}
-                        <p className="mt-4 text-sm font-medium text-gray-600">
+                        <p className="mt-5 text-sm font-medium text-gray-600">
                             {product.stock > 0
                                 ? `${product.stock} items available`
                                 : "Out of stock"}
@@ -499,13 +499,13 @@ function ProductDetails() {
 
                         {/* Quantity */}
                         {product.stock > 0 && (
-                            <div className="mt-8">
+                            <div className="mt-7">
 
                                 <p className="mb-3 text-sm font-semibold text-gray-900">
                                     Quantity
                                 </p>
 
-                                <div className="flex w-fit items-center rounded-lg border border-gray-300">
+                                <div className="flex w-fit items-center overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
 
                                     <button
                                         type="button"
@@ -514,12 +514,12 @@ function ProductDetails() {
                                                 Math.max(1, current - 1)
                                             )
                                         }
-                                        className="flex h-11 w-11 items-center justify-center text-lg hover:bg-gray-100"
+                                        className="flex h-11 w-11 items-center justify-center text-lg text-gray-600 transition hover:bg-gray-100"
                                     >
                                         −
                                     </button>
 
-                                    <span className="flex h-11 w-12 items-center justify-center border-x border-gray-300 font-semibold">
+                                    <span className="flex h-11 w-12 items-center justify-center border-x border-gray-200 font-semibold text-gray-900">
                                         {quantity}
                                     </span>
 
@@ -534,7 +534,7 @@ function ProductDetails() {
                                                 )
                                             )
                                         }
-                                        className="flex h-11 w-11 items-center justify-center text-lg hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+                                        className="flex h-11 w-11 items-center justify-center text-lg text-gray-600 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
                                     >
                                         +
                                     </button>
@@ -570,7 +570,7 @@ function ProductDetails() {
                                         })
                                     );
                                 }}
-                                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-black px-6 py-3 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400"
+                                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#172033] px-6 py-3.5 font-semibold text-white shadow-sm transition-all duration-300 hover:bg-[#24324a] hover:shadow-md disabled:cursor-not-allowed disabled:bg-gray-400"
                             >
                                 <ShoppingCart size={18} />
                                 {product.stock > 0
@@ -608,7 +608,10 @@ function ProductDetails() {
                                         );
                                     }
                                 }}
-                                className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-300 transition hover:bg-gray-100"
+                                className={`flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-300 ${isWishlisted
+                                    ? "border-[#172033] bg-[#172033] text-white"
+                                    : "border-gray-300 bg-white text-gray-700 hover:border-[#172033] hover:text-[#172033]"
+                                    }`}
                             >
                                 <Heart
                                     size={22}
@@ -622,6 +625,25 @@ function ProductDetails() {
 
                         </div>
 
+                        {/* Product Quick Info */}
+                        <div className="mt-8 border-t border-gray-200 pt-6">
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p className="text-gray-400">Category</p>
+                                    <p className="mt-1 font-medium capitalize text-gray-900">
+                                        {product.category?.replace(/-/g, " ")}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <p className="text-gray-400">Availability</p>
+                                    <p className="mt-1 font-medium text-gray-900">
+                                        {product.stock > 0 ? "In Stock" : "Out of Stock"}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
 
@@ -630,11 +652,11 @@ function ProductDetails() {
 
 
                 {/* Reviews & Rating Summary */}
-                <div className="mt-16 border-t border-gray-200 pt-12">
+                <div className="mt-20 border-t border-gray-200 pt-14">
                     <div className="grid gap-10 md:grid-cols-2">
                         {/* Rating Overview */}
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">
+                            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
                                 Customer Reviews
                             </h2>
 
@@ -649,7 +671,7 @@ function ProductDetails() {
                             ) : (
                                 <>
                                     <div className="mt-6 flex items-center gap-4">
-                                        <span className="text-5xl font-bold text-gray-900">
+                                        <span className="text-5xl font-bold tracking-tight text-[#172033]">
                                             {reviewSummary.averageRating.toFixed(1)}
                                         </span>
 
@@ -705,7 +727,7 @@ function ProductDetails() {
 
                                                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-200">
                                                         <div
-                                                            className="h-full rounded-full bg-black"
+                                                            className="h-full rounded-full bg-[#172033] transition-all duration-500"
                                                             style={{
                                                                 width: `${percentage}%`,
                                                             }}
@@ -759,7 +781,7 @@ function ProductDetails() {
 
                 {/* Write a Review */}
                 {/* Write a Review */}
-                <div className="mt-12 border-t border-gray-200 pt-10">
+                <div className="mt-14 border-t border-gray-200 pt-12">
                     {!user ? (
                         <div className="rounded-2xl bg-gray-50 p-8 text-center">
                             <h3 className="text-xl font-bold text-gray-900">
@@ -807,7 +829,7 @@ function ProductDetails() {
                         </div>
                     ) : (
                         <div className="max-w-2xl">
-                            <h3 className="text-xl font-bold text-gray-900">
+                            <h3 className="text-2xl font-bold tracking-tight text-gray-900">
                                 Write a Review
                             </h3>
 
@@ -843,10 +865,10 @@ function ProductDetails() {
                                                 onClick={() =>
                                                     setReviewRating(rating)
                                                 }
-                                                className={`text-3xl transition ${rating <= reviewRating
-                                                    ? "text-black"
-                                                    : "text-gray-300"
-                                                    } hover:scale-105`}
+                                                className={`text-3xl transition-all duration-200 ${rating <= reviewRating
+                                                        ? "text-[#172033]"
+                                                        : "text-gray-300"
+                                                    } hover:scale-110`}
                                             >
                                                 ★
                                             </button>
@@ -872,7 +894,7 @@ function ProductDetails() {
                                         rows={5}
                                         maxLength={1000}
                                         placeholder="Tell us about your experience..."
-                                        className="mt-3 w-full resize-y rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black focus:ring-1 focus:ring-black"
+                                        className="mt-3 w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all placeholder:text-gray-400 focus:border-[#172033] focus:ring-1 focus:ring-[#172033]/10"
                                     />
 
                                     <p className="mt-2 text-right text-xs text-gray-500">
@@ -904,7 +926,7 @@ function ProductDetails() {
                                 <button
                                     type="submit"
                                     disabled={reviewSubmitting}
-                                    className="rounded-lg bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400"
+                                    className="rounded-xl bg-[#172033] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-[#24324a] hover:shadow-md disabled:cursor-not-allowed disabled:bg-gray-400"
                                 >
                                     {reviewSubmitting
                                         ? "Submitting..."
@@ -916,7 +938,7 @@ function ProductDetails() {
                 </div>
 
                 {/* Customer Reviews List */}
-                <div className="mt-12 border-t border-gray-200 pt-10">
+                <div className="mt-14 border-t border-gray-200 pt-12">
                     <h3 className="text-xl font-bold text-gray-900">
                         What our customers say
                     </h3>
@@ -954,7 +976,7 @@ function ProductDetails() {
                             {reviews.map((review) => (
                                 <article
                                     key={review._id}
-                                    className="rounded-2xl border border-gray-200 bg-white p-6"
+                                    className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
                                 >
                                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                         <div>
@@ -972,7 +994,7 @@ function ProductDetails() {
                                                 )}
                                             </div>
 
-                                            <div className="mt-2 text-sm tracking-wide">
+                                            <div className="mt-2 text-sm tracking-wide text-[#172033]">
                                                 {"★".repeat(review.rating)}
                                                 <span className="text-gray-300">
                                                     {"★".repeat(

@@ -166,7 +166,7 @@ function Products() {
 
 
     return (
-        <section className="pt-0 pb-12">
+        <section className="pt-4 pb-12 bg-[#F7F3E8]">
             <div className="mx-auto max-w-[1440px] px-4 sm:px-5 lg:px-4">
 
                 {/* Page Header */}

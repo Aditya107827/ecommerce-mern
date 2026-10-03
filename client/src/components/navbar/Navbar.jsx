@@ -32,15 +32,19 @@ function Navbar() {
     };
 
     return (
-        <header className=" bg-slate-50">
-            <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <header className="border-b border-[#E5DFD1] bg-[#F7F3E8]">
+            <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 h-14">
 
                 {/* Logo */}
                 <Link
                     to="/"
-                    className="text-2xl font-bold"
+                    className="-ml-16 flex items-center lg:-ml-38"
                 >
-                    E-Shop
+                    <img
+                        src="/images/logo.png"
+                        alt="Resin Aura"
+                        className="h-auto w-[300px] object-contain"
+                    />
                 </Link>
 
                 {/* Navigation */}

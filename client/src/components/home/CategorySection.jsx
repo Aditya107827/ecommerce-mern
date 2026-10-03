@@ -27,7 +27,12 @@ function CategorySection() {
     }, []);
 
     return (
-        <section className="bg-white pt-10 pb-16 sm:pt-12 sm:pb-20">
+        <section
+            className="bg-cover bg-center bg-no-repeat pt-10 pb-16 sm:pt-12 sm:pb-20"
+            style={{
+                backgroundImage: "url('/images/bg2.png')",
+            }}
+        >
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* Section Header */}

@@ -16,7 +16,7 @@ function ProductCard({ product }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { user } = useAuth();
-    
+
 
     const wishlistItems = useSelector(
         (state) => state.wishlist.items
@@ -37,7 +37,7 @@ function ProductCard({ product }) {
 
 
     return (
-        <article className="group overflow-hidden rounded-2xl border border-gray-200 bg-white">
+        <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
 
             {/* Product Image */}
             <div className="relative h-64 overflow-hidden bg-gray-100">
@@ -50,7 +50,7 @@ function ProductCard({ product }) {
                         <img
                             src={imageUrl}
                             alt={product.name}
-                            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                             loading="lazy"
                         />
                     ) : (
@@ -110,7 +110,7 @@ function ProductCard({ product }) {
 
 
             {/* Product Information */}
-            <div className="p-5">
+            <div className="flex flex-1 flex-col p-5">
 
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                     {product.category
@@ -154,7 +154,7 @@ function ProductCard({ product }) {
                             })
                         );
                     }}
-                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                    className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-black"
                 >
 
                     <ShoppingCart size={18} />
