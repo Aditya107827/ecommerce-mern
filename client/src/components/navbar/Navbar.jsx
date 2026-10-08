@@ -33,12 +33,12 @@ function Navbar() {
 
     return (
         <header className="border-b border-[#E5DFD1] bg-[#F7F3E8]">
-            <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 h-14">
+            <nav className="grid h-14 w-full grid-cols-3 items-center px-6 py-2">
 
                 {/* Logo */}
                 <Link
                     to="/"
-                    className="ml-0 flex items-center lg:-ml-38"
+                    className="flex shrink-0 items-center justify-self-start"
                 >
                     <img
                         src="/images/logo3.png"
@@ -48,7 +48,7 @@ function Navbar() {
                 </Link>
 
                 {/* Navigation */}
-                <div className="hidden items-center gap-6 md:flex">
+                <div className="hidden items-center justify-center gap-6 md:flex">
 
                     <Link
                         to="/"
