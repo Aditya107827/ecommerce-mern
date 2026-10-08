@@ -41,9 +41,9 @@ function Navbar() {
                     className="-ml-16 flex items-center lg:-ml-38"
                 >
                     <img
-                        src="/images/logo.png"
+                        src="/images/logo3.png"
                         alt="Resin Aura"
-                        className="h-auto w-[300px] object-contain"
+                        className="h-auto w-[150px] object-contain"
                     />
                 </Link>
 

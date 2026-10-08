@@ -1,5 +1,5 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart, ShoppingCart, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { addProductToCart } from "../../store/cartSlice";
@@ -27,6 +27,7 @@ function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(0);
+    const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [reviews, setReviews] = useState([]);
@@ -431,17 +432,31 @@ function ProductDetails() {
                     <div>
                         {/* Main Image */}
                         <div className="group relative flex h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-[#f8f6f2] sm:h-[500px]">
+
                             {galleryImages.length > 0 ? (
-                                <img
-                                    src={galleryImages[selectedImage]?.url}
-                                    alt={product.name}
-                                    className="max-h-[90%] max-w-[90%] object-contain transition duration-500 ease-out group-hover:scale-[1.03]"
-                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setIsImageViewerOpen(true)}
+                                    className="flex h-full w-full cursor-zoom-in items-center justify-center focus:outline-none"
+                                    aria-label="View product image"
+                                >
+                                    <img
+                                        src={galleryImages[selectedImage]?.url}
+                                        alt={product.name}
+                                        className="max-h-[90%] max-w-[90%] object-contain transition duration-500 ease-out group-hover:scale-[1.03]"
+                                    />
+
+                                    {/* Click to view hint */}
+                                    <span className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-2 text-xs font-medium text-white opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                                        Click to view
+                                    </span>
+                                </button>
                             ) : (
                                 <span className="text-sm text-gray-400">
                                     Product Image
                                 </span>
                             )}
+
                         </div>
 
                         {/* Image Thumbnails */}
@@ -866,8 +881,8 @@ function ProductDetails() {
                                                     setReviewRating(rating)
                                                 }
                                                 className={`text-3xl transition-all duration-200 ${rating <= reviewRating
-                                                        ? "text-[#172033]"
-                                                        : "text-gray-300"
+                                                    ? "text-[#172033]"
+                                                    : "text-gray-300"
                                                     } hover:scale-110`}
                                             >
                                                 ★
@@ -1130,6 +1145,82 @@ function ProductDetails() {
                 </div>
 
             </div>
+
+            {isImageViewerOpen && galleryImages.length > 0 && (
+                <div
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+                    onClick={() => setIsImageViewerOpen(false)}
+                >
+                    {/* Close Button */}
+                    <button
+                        type="button"
+                        onClick={() => setIsImageViewerOpen(false)}
+                        className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition hover:bg-white/20"
+                        aria-label="Close image viewer"
+                    >
+                        <X size={24} />
+                    </button>
+
+                    {/* Previous */}
+                    {galleryImages.length > 1 && (
+                        <button
+                            type="button"
+                            onClick={(event) => {
+                                event.stopPropagation();
+
+                                setSelectedImage((current) =>
+                                    current === 0
+                                        ? galleryImages.length - 1
+                                        : current - 1
+                                );
+                            }}
+                            className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition hover:bg-white/20 sm:left-8"
+                            aria-label="Previous image"
+                        >
+                            <ChevronLeft size={28} />
+                        </button>
+                    )}
+
+                    {/* Main Fullscreen Image */}
+                    <div
+                        className="flex h-full w-full items-center justify-center"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <img
+                            src={galleryImages[selectedImage]?.url}
+                            alt={product.name}
+                            className="max-h-[90vh] max-w-[90vw] object-contain"
+                        />
+                    </div>
+
+                    {/* Next */}
+                    {galleryImages.length > 1 && (
+                        <button
+                            type="button"
+                            onClick={(event) => {
+                                event.stopPropagation();
+
+                                setSelectedImage((current) =>
+                                    current === galleryImages.length - 1
+                                        ? 0
+                                        : current + 1
+                                );
+                            }}
+                            className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition hover:bg-white/20 sm:right-8"
+                            aria-label="Next image"
+                        >
+                            <ChevronRight size={28} />
+                        </button>
+                    )}
+
+                    {/* Image Counter */}
+                    {galleryImages.length > 1 && (
+                        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md">
+                            {selectedImage + 1} / {galleryImages.length}
+                        </div>
+                    )}
+                </div>
+            )}
         </section>
     );
 }
