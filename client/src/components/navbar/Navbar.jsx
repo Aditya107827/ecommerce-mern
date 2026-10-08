@@ -38,12 +38,12 @@ function Navbar() {
                 {/* Logo */}
                 <Link
                     to="/"
-                    className="-ml-16 flex items-center lg:-ml-38"
+                    className="ml-0 flex items-center lg:-ml-38"
                 >
                     <img
                         src="/images/logo3.png"
                         alt="Resin Aura"
-                        className="h-auto w-[150px] object-contain"
+                        className="h-[44px] w-auto object-contain sm:h-[46px] lg:h-[48px]"
                     />
                 </Link>
 
