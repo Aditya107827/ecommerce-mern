@@ -49,6 +49,13 @@ app.get("/", (req, res) => {
     });
 });
 
+// Health Check Route
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "OK",
+    });
+});
+
 app.use((err, req, res, next) => {
     console.error("Server error:", err);
 

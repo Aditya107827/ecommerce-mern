@@ -421,7 +421,7 @@ function ProductDetails() {
 
                 <Link
                     to="/products"
-                    className="mb-5 hidden items-center text-sm font-medium text-gray-500 transition hover:text-gray-900 md:inline-flex"
+                    className="mb-5 flex items-center text-sm font-medium text-gray-500 transition hover:text-gray-900 "
                 >
                     ← Back
                 </Link>

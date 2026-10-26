@@ -38,15 +38,9 @@ function HeroSection() {
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 pt-4 pb-10 md:grid-cols-2 md:pt-2 md:pb-12">
 
         {/* Content */}
-        <div className="animate-[heroText_0.7s_ease-out_forwards]">
+        <div className="pt-12 md:pt-16 animate-[heroText_0.7s_ease-out_forwards]">
 
-          <div className="mb-5">
-            <img
-              src="/images/logo.png"
-              alt="Resin Aura"
-              className="h-auto w-[310px] object-contain"
-            />
-          </div>
+          
 
 
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#52606f]">
