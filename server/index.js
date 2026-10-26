@@ -16,6 +16,7 @@ const addressRoutes = require("./routes/addressRoutes");
 const storeSettingsRoutes = require("./routes/storeSettingsRoutes");
 const helmet = require("helmet");
 const multer = require("multer");
+const mongoose = require("mongoose");
 const app = express();
 
 
@@ -51,8 +52,18 @@ app.get("/", (req, res) => {
 
 // Health Check Route
 app.get("/health", (req, res) => {
-    res.status(200).json({
+    const dbConnected = mongoose.connection.readyState === 1;
+
+    if (!dbConnected) {
+        return res.status(503).json({
+            status: "ERROR",
+            database: "Disconnected",
+        });
+    }
+
+    return res.status(200).json({
         status: "OK",
+        database: "Connected",
     });
 });
 
