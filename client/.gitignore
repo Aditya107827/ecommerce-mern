@@ -29,3 +29,10 @@ dist-ssr
 
 # Uploaded files
 uploads/
+
+node_modules/
+**/node_modules/
+.env
+.env.*
+!.env.example
+dist/

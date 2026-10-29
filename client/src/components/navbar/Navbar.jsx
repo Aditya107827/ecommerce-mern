@@ -33,7 +33,7 @@ function Navbar() {
 
     return (
         <header className="border-b border-[#E5DFD1] bg-[#F7F3E8]">
-            <nav className="grid h-14 w-full grid-cols-3 items-center px-6 py-2">
+            <nav className="flex h-14 w-full items-center justify-between px-3 py-2 sm:px-6">
 
                 {/* Logo */}
                 <Link
@@ -67,7 +67,7 @@ function Navbar() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-self-end gap-3 sm:gap-4">
 
                     {/* Search */}
                     <button

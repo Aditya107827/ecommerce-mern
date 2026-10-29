@@ -21,6 +21,12 @@ import AdminOrders from "../pages/admin/AdminOrders";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminReviews from "../pages/admin/AdminReviews";
 import AdminSettings from "../pages/admin/AdminSettings";
+
+import PrivatePolicy from "../pages/customer/PrivatePolicy";
+
+import TermsAndConditions from "../pages/customer/TermsAndConditions";
+import ShippingPolicy from "../pages/customer/ShippingPolicy";
+import ReturnRefundPolicy from "../pages/customer/ReturnRefundPolicy";
 import ScrollToTop from "../components/ScrollToTop";
 import AdminRoute from "./AdminRoute";
 
@@ -65,6 +71,14 @@ function AppRoutes() {
                             element={<OrderDetails />}
                         />
                     </Route>
+
+                    {/* Store Policies */}
+                    <Route path="/privacy-policy" element={<PrivatePolicy />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                    <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                    <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
+
+                    
                 </Route>
 
                 {/* Protected Admin */}
